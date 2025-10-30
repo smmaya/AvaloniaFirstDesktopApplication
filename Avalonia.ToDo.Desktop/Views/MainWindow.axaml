@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Avalonia.ToDo.Desktop.ViewModels"
         x:Class="Avalonia.ToDo.Desktop.Views.MainWindow"
-        Width="1200" Height="768"
         Title="Avalonia ToDo Desktop Application"
         x:DataType="vm:MainWindowViewModel">
 

@@ -13,6 +13,7 @@ public partial class MainWindow : Window
         DataContext = viewModel;
         
         viewModel.MainWindow = this;
+        WindowState = WindowState.Maximized;
     }
     
     public async void ShowAlert(string message, int durationMs = 5000)

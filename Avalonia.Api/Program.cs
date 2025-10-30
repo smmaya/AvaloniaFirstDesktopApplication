@@ -32,9 +32,11 @@ app.UseHttpsRedirection();
 // Get all
 app.MapGet("/api/todo", async (ToDoDbContext db) =>
     await db.ToDos
+        .OrderByDescending(t => t.CreatedAt)
         .Select(t => new ToDoDto
         {
             Id = t.Id,
+            CreatedAt = t.CreatedAt,
             Title = t.Title,
             Description = t.Description,
             IsCompleted = t.IsCompleted
@@ -49,6 +51,7 @@ app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
     return t is null ? Results.NotFound() : Results.Ok(new ToDoDto
     {
         Id = t.Id,
+        CreatedAt = t.CreatedAt,
         Title = t.Title,
         Description = t.Description,
         IsCompleted = t.IsCompleted
@@ -60,6 +63,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
 {
     var todo = new ToDo
     {
+        CreatedAt = dto.CreatedAt == default ? DateTime.UtcNow : dto.CreatedAt,
         Title = dto.Title,
         Description = dto.Description,
         IsCompleted = dto.IsCompleted
@@ -71,6 +75,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
     return Results.Created($"/api/todo/{todo.Id}", new ToDoDto
     {
         Id = todo.Id,
+        CreatedAt = dto.CreatedAt,
         Title = todo.Title,
         Description = todo.Description,
         IsCompleted = todo.IsCompleted
@@ -82,13 +87,20 @@ app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db) =
 {
     var t = await db.ToDos.FindAsync(id);
     if (t is null) return Results.NotFound();
-
+    
     t.Title = dto.Title;
     t.Description = dto.Description;
     t.IsCompleted = dto.IsCompleted;
 
     await db.SaveChangesAsync();
-    return Results.Ok(dto);
+    return Results.Ok(new ToDoDto
+    {
+        Id = t.Id,
+        CreatedAt = t.CreatedAt,
+        Title = t.Title,
+        Description = t.Description,
+        IsCompleted = t.IsCompleted
+    });
 });
 
 // Delete

@@ -13,7 +13,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     private readonly ToDoService _service;
     private UserControl _currentView;
     
-    public Window MainWindow { get; set; }
+    public required Window MainWindow { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
