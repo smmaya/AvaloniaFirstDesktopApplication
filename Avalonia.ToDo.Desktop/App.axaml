@@ -1,0 +1,34 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Avalonia.ToDo.Desktop.App"
+             xmlns:local="using:Avalonia.ToDo.Desktop"
+             RequestedThemeVariant="Default">
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.ToDo.Desktop/Styles/CustomButtonTheme.axaml" />
+        <StyleInclude Source="avares://Avalonia.ToDo.Desktop/Styles/CustomInputTheme.axaml" />
+
+        <!-- keep text/icon from getting a hover/selection tint -->
+        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter, 
+            Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            
+            <!-- prevent highlight background around text/icon -->
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            
+            <!-- keep the text color stable (use same brush as normal) -->
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+        </Style>
+
+        <Style Selector="Button:pointerover">
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+    </Application.Styles>
+
+</Application>

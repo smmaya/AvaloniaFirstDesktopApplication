@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Avalonia.ToDo.Desktop.ViewModels"
+        x:Class="Avalonia.ToDo.Desktop.Views.MainWindow"
+        Width="1200" Height="768"
+        Title="Avalonia ToDo Desktop Application"
+        x:DataType="vm:MainWindowViewModel">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel /> 
+    </Design.DataContext>
+    
+    <Grid Background="#F0F2F5">
+        <Border Background="White" CornerRadius="10" Margin="10" Padding="10"
+                BoxShadow="5 5 10 0 DarkGray">
+            <ContentControl Content="{Binding CurrentView}" />
+        </Border>
+        
+        <!-- Simple bottom alert -->
+        <Border x:Name="BottomAlert"
+                Background="#FFEBEE"
+                BorderBrush="#F44336"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0, 0, 0, 30"
+                MinWidth="300"
+                MaxWidth="500"
+                IsVisible="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="AlertMessage"
+                           Text="Error message goes here"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           Grid.Column="0"
+                           HorizontalAlignment="Left" />
+
+                <Button Content="✖"
+                        Width="30"
+                        Height="30"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Padding="2,2"
+                        Click="CloseAlert_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

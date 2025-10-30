@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Avalonia.ToDo.Desktop.ViewModels"
+             x:Class="Avalonia.ToDo.Desktop.Views.ToDoListView"
+             x:DataType="vm:ToDoListViewModel">
+    
+    <StackPanel Margin="20" Spacing="20">
+
+        <!-- Title -->
+        <TextBlock Text="Simple ToDo with Avalonia Desktop"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center" />
+
+        <!-- Buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Content="➕ New" Command="{Binding CreateCommand}" Width="150" Margin="0,0,10,0" />
+            <Button Content="🔄 Refresh" Command="{Binding RefreshCommand}" Width="150" />
+        </StackPanel>
+
+        <!-- Table -->
+        <Border Background="White" CornerRadius="8" BoxShadow="3 3 10 0 Gray">
+            <StackPanel>
+                <!-- Headers -->
+                <Grid ColumnDefinitions="*,2*,Auto,Auto,Auto,Auto" Background="#E0E0E0" Height="32">
+                    <TextBlock Text="Title" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="8,0" Grid.Column="0" />
+                    <TextBlock Text="Description" FontWeight="Bold" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Margin="8,0" Grid.Column="1" />
+                    <TextBlock Text="Done" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="8,0" Grid.Column="2" />
+                    <TextBlock Text="View" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" Grid.Column="3" />
+                    <TextBlock Text="Edit" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" Grid.Column="4" />
+                    <TextBlock Text="Delete" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Margin="5,0" Grid.Column="5" />
+                </Grid>
+                <!-- Data rows -->
+                <ItemsControl ItemsSource="{Binding ToDos}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Background="White">
+                                <Grid ColumnDefinitions="*,2*,Auto,Auto,Auto,Auto" MinHeight="32">
+                                    <TextBlock Text="{Binding Title}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Margin="8,0" Grid.Column="0" />
+                                    <TextBlock Text="{Binding Description}"
+                                               TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left"
+                                               Margin="8,0" Grid.Column="1" />
+                                    <CheckBox IsChecked="{Binding IsCompleted}"
+                                              IsEnabled="False"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0" Grid.Column="2" />
+                                    <Button Classes="view"
+                                            Content="👁"
+                                            Command="{Binding DataContext.ViewCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Grid.Column="3"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="8"
+                                            Padding="6,3"
+                                            Width="30" />
+                                    <Button Classes="edit"
+                                            Content="✏"
+                                            Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Grid.Column="4"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="8"
+                                            Padding="6,3"
+                                            Width="30" />
+                                    <Button Classes="delete"
+                                            Content="🗑"
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Grid.Column="5"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="8"
+                                            Padding="6,3"
+                                            Width="30" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+            </StackPanel>
+            
+        </Border>
+    </StackPanel>
+    
+</UserControl>

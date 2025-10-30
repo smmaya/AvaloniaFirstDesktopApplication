@@ -1,0 +1,15 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- TextBox disabled override -->
+    <Style Selector="TextBox:disabled">
+        <Setter Property="Background" Value="#FAFAFA"/>
+        <Setter Property="Foreground" Value="#6B7280"/>
+    </Style>
+
+    <!-- CheckBox disabled override -->
+    <Style Selector="CheckBox:disabled">
+        <Setter Property="Foreground" Value="#6B7280"/>
+    </Style>
+
+</Styles>

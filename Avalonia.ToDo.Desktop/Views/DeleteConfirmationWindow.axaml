@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Avalonia.ToDo.Desktop.Views.DeleteConfirmationWindow"
+        Width="400" Height="200"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="#F5F5F5"
+        TransparencyLevelHint="AcrylicBlur"
+        CornerRadius="12"
+        Title="Confirm Delete">
+
+    <Border Background="White" CornerRadius="12" Padding="15" BoxShadow="3 3 10 0 Gray">
+        <StackPanel Spacing="20" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <!-- Message -->
+            <TextBlock Text="Are you sure you want to delete this item?" 
+                       TextWrapping="Wrap" 
+                       FontSize="16" 
+                       FontWeight="SemiBold"
+                       Foreground="#333"
+                       TextAlignment="Center" 
+                       HorizontalAlignment="Center" />
+            
+            <!-- Buttons centered -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="15">
+                <Button Content="No" Width="90" Click="No_Click"/>
+                <Button Content="Yes" Width="90" Click="Yes_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

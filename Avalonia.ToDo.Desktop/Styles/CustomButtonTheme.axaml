@@ -1,0 +1,234 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style>
+        <!-- Default Button Theme (gray) -->
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#E5E5E5" />
+            <Setter Property="Foreground" Value="#1F2937" />
+            <Setter Property="BorderBrush" Value="#D1D5DB" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#D1D5DB" />
+                <Setter Property="BorderBrush" Value="#9CA3AF" />
+                <Setter Property="BoxShadow" Value="0 2 6 0 #00000020" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#9CA3AF" />
+                <Setter Property="BorderBrush" Value="#6B7280" />
+                <Setter Property="BoxShadow" Value="inset 0 2 4 0 #00000020" />
+            </Style>
+
+            <Style Selector="^:focus-visible /template/ Border#PART_Border">
+                <Setter Property="BorderBrush" Value="#6B7280" />
+                <Setter Property="BoxShadow" Value="0 0 0 3 #D1D5DB80" />
+            </Style>
+
+            <Style Selector="^:disabled /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#F3F4F6" />
+                <Setter Property="BorderBrush" Value="#E5E7EB" />
+                <Setter Property="TextElement.Foreground" Value="#9CA3AF" />
+                <Setter Property="Opacity" Value="0.7" />
+            </Style>
+        </Style>
+
+        <!-- Save button (green) -->
+        <Style Selector="Button.save">
+            <Setter Property="Background" Value="#34D399" /> <!-- green-400 pastel -->
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#10B981" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#059669" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#047857" />
+            </Style>
+
+            <Style Selector="^:focus-visible /template/ Border#PART_Border">
+                <Setter Property="BorderBrush" Value="#065F46" />
+                <Setter Property="BoxShadow" Value="0 0 0 3 #34D39950" />
+            </Style>
+        </Style>
+
+        <!-- View button (muted teal) -->
+        <Style Selector="Button.view">
+            <Setter Property="Background" Value="#D1FAE5" /> <!-- very light teal -->
+            <Setter Property="Foreground" Value="#065F46" /> <!-- dark teal for icon -->
+            <Setter Property="BorderBrush" Value="#A7F3D0" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#A7F3D0" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#6EE7B7" />
+            </Style>
+
+            <Style Selector="^:focus-visible /template/ Border#PART_Border">
+                <Setter Property="BorderBrush" Value="#34D399" />
+                <Setter Property="BoxShadow" Value="0 0 0 2 #A7F3D080" />
+            </Style>
+        </Style>
+
+        <!-- Edit button (muted yellow) -->
+        <Style Selector="Button.edit">
+            <Setter Property="Background" Value="#FEF3C7" /> <!-- very light yellow -->
+            <Setter Property="Foreground" Value="#92400E" /> <!-- darker yellow for icon -->
+            <Setter Property="BorderBrush" Value="#FDE68A" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#FDE68A" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#FCD34D" />
+            </Style>
+
+            <Style Selector="^:focus-visible /template/ Border#PART_Border">
+                <Setter Property="BorderBrush" Value="#FBBF24" />
+                <Setter Property="BoxShadow" Value="0 0 0 2 #FDE68A80" />
+            </Style>
+        </Style>
+
+        <!-- Delete button (muted red) -->
+        <Style Selector="Button.delete">
+            <Setter Property="Background" Value="#FEE2E2" /> <!-- very light red -->
+            <Setter Property="Foreground" Value="#991B1B" /> <!-- dark red for icon -->
+            <Setter Property="BorderBrush" Value="#FCA5A5" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border
+                        Name="PART_Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#FCA5A5" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Border">
+                <Setter Property="Background" Value="#F87171" />
+            </Style>
+
+            <Style Selector="^:focus-visible /template/ Border#PART_Border">
+                <Setter Property="BorderBrush" Value="#EF4444" />
+                <Setter Property="BoxShadow" Value="0 0 0 2 #FCA5A580" />
+            </Style>
+        </Style>
+
+    </Style>
+</Styles>

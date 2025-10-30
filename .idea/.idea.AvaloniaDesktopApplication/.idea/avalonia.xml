@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Avalonia.Desktop/App.axaml" value="Avalonia.Desktop/Avalonia.Desktop.csproj" />
+        <entry key="Avalonia.Desktop/Views/MainWindow.axaml" value="Avalonia.Desktop/Avalonia.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/App.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Styles/CustomButtonTheme.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Styles/CustomInputTheme.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/DeleteConfirmationWindow.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/MainWindow.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoDetailsView.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoDetailsViewModel.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoEditorView.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoEditorViewModel.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoListView.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/ToDoListViewModel.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="AvaloniaDesktop/App.axaml" value="AvaloniaDesktop/AvaloniaDesktop.csproj" />
+        <entry key="AvaloniaDesktop/Views/MainWindow.axaml" value="AvaloniaDesktop/AvaloniaDesktop.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
