@@ -15,11 +15,12 @@
         <!-- Buttons -->
         <Grid ColumnDefinitions="Auto,Auto,*">
             <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <Button Content="➕ New" Command="{Binding CreateCommand}" Width="150" Margin="0,0,10,0"/>
+                <Button Content="➕ New" Command="{Binding CreateCommand}" Width="150" Margin="0,0,10,0"
+                        IsVisible="{Binding CanCreate}"/>
                 <Button Content="🔄 Refresh" Command="{Binding RefreshCommand}" Width="150"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Spacing="20">
+            <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Spacing="50">
                 <TextBlock Text="{Binding TotalCount, StringFormat='Total: {0}'}" FontWeight="Bold"/>
                 <TextBlock Text="{Binding RemainingCount, StringFormat='Remaining: {0}'}" FontWeight="Bold"/>
             </StackPanel>

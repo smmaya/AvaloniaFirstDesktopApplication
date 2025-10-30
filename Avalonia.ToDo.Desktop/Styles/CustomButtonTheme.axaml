@@ -58,7 +58,7 @@
                 <Setter Property="Opacity" Value="0.7" />
             </Style>
         </Style>
-
+        
         <!-- Save button (green) -->
         <Style Selector="Button.save">
             <Setter Property="Background" Value="#34D399" /> <!-- green-400 pastel -->
