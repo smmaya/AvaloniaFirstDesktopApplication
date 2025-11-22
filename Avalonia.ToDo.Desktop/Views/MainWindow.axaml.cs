@@ -12,7 +12,6 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = viewModel;
         
-        viewModel.MainWindow = this;
         WindowState = WindowState.Maximized;
     }
     

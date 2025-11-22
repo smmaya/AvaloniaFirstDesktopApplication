@@ -1,8 +1,9 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.ModelDtos;
-using Avalonia.Shared.Services;
 using Avalonia.ToDo.Desktop.Helpers;
 
 namespace Avalonia.ToDo.Desktop.ViewModels;
@@ -10,7 +11,7 @@ namespace Avalonia.ToDo.Desktop.ViewModels;
 public class ToDoEditorViewModel : INotifyPropertyChanged
 {
     private readonly MainWindowViewModel _main;
-    private readonly ToDoService _service;
+    private readonly IToDoService _service;
     private readonly bool _isEditMode;
 
     private ToDoDto Item { get; set; }
@@ -21,7 +22,7 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ToDoEditorViewModel(MainWindowViewModel main, ToDoService service, ToDoDto? existingItem = null)
+    public ToDoEditorViewModel(MainWindowViewModel main, IToDoService service, ToDoDto? existingItem = null)
     {
         _main = main;
         _service = service;
@@ -114,8 +115,16 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
         stack.Children.Add(okButton);
 
         window.Content = stack;
-        
-        await window.ShowDialog(_main.MainWindow);
+
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
+            && desktop.MainWindow is { } mainWindow)
+        {
+            await window.ShowDialog(mainWindow);
+        }
+        else
+        {
+            window.Show();
+        }
     }
     
     private void NavigateBack()

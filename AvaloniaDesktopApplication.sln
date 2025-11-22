@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Shared", "Avalonia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.ToDo.Desktop", "Avalonia.ToDo.Desktop\Avalonia.ToDo.Desktop.csproj", "{267E49FB-D3E4-44E0-8AAD-4D0205D2AD56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.AuthService", "Avalonia.AuthService\Avalonia.AuthService.csproj", "{014D20A7-698A-4711-8F0E-BA0DDC6D5808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Gateway", "Avalonia.Gateway\Avalonia.Gateway.csproj", "{BCA17F19-C337-4602-A540-577DD43538D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{267E49FB-D3E4-44E0-8AAD-4D0205D2AD56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267E49FB-D3E4-44E0-8AAD-4D0205D2AD56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267E49FB-D3E4-44E0-8AAD-4D0205D2AD56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014D20A7-698A-4711-8F0E-BA0DDC6D5808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014D20A7-698A-4711-8F0E-BA0DDC6D5808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014D20A7-698A-4711-8F0E-BA0DDC6D5808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014D20A7-698A-4711-8F0E-BA0DDC6D5808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA17F19-C337-4602-A540-577DD43538D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA17F19-C337-4602-A540-577DD43538D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA17F19-C337-4602-A540-577DD43538D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA17F19-C337-4602-A540-577DD43538D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,8 @@ using Avalonia.Api.Data;
 using Avalonia.Shared.ModelDtos;
 using Avalonia.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,41 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseSqlite("Data Source=todo.db"));
 
+// Authentication/Authorization (dev symmetric key; align with AuthService)
+const string issuer = "Avalonia.AuthService";
+const string audience = "Avalonia.Clients";
+var signingKey = new SymmetricSecurityKey("dev-super-secret-key-please-change-1234567890"u8.ToArray());
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false; // dev only
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = issuer,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = signingKey,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromSeconds(30)
+    };
+});
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+
+// Ensure database exists for development. Use EnsureCreated to avoid pending-migrations exception in dev.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+    db.Database.EnsureCreated();
+}
 
 // --- Middleware ---
 if (app.Environment.IsDevelopment())
@@ -25,7 +61,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// For local development behind a gateway using HTTP, skip HTTPS redirection.
+// Enable HTTPS in production with proper certificates.
+// app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // --- Endpoints ---
 
@@ -42,7 +82,7 @@ app.MapGet("/api/todo", async (ToDoDbContext db) =>
             IsCompleted = t.IsCompleted
         })
         .ToListAsync()
-);
+).RequireAuthorization();
 
 // Get by ID
 app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
@@ -56,7 +96,7 @@ app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
         Description = t.Description,
         IsCompleted = t.IsCompleted
     });
-});
+}).RequireAuthorization();
 
 // Create
 app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
@@ -80,7 +120,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
         Description = todo.Description,
         IsCompleted = todo.IsCompleted
     });
-});
+}).RequireAuthorization();
 
 // Update
 app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db) =>
@@ -101,7 +141,7 @@ app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db) =
         Description = t.Description,
         IsCompleted = t.IsCompleted
     });
-});
+}).RequireAuthorization();
 
 // Delete
 app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
@@ -112,6 +152,6 @@ app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
     db.ToDos.Remove(t);
     await db.SaveChangesAsync();
     return Results.NoContent();
-});
+}).RequireAuthorization();
 
 app.Run();

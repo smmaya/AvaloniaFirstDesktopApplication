@@ -1,7 +1,8 @@
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.ModelDtos;
-using Avalonia.Shared.Services;
 using Avalonia.ToDo.Desktop.Helpers;
 
 namespace Avalonia.ToDo.Desktop.ViewModels;
@@ -9,7 +10,7 @@ namespace Avalonia.ToDo.Desktop.ViewModels;
 public class ToDoDetailsViewModel : INotifyPropertyChanged
 {
     private readonly MainWindowViewModel _main;
-    private readonly ToDoService _service;
+    private readonly IToDoService _service;
 
     private ToDoDto? _item;
     public ToDoDto? Item
@@ -44,7 +45,7 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ToDoDetailsViewModel(MainWindowViewModel main, ToDoService service, ToDoDto? existingItem = null)
+    public ToDoDetailsViewModel(MainWindowViewModel main, IToDoService service, ToDoDto? existingItem = null)
     {
         _main = main;
         _service = service;
@@ -52,21 +53,22 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
         Item = existingItem;
         IsEditing = false;
 
-        BackCommand = new RelayCommand(_ => NavigateBack());
-        EditCommand = new RelayCommand(_ => NavigateToEdit());
+        BackCommand = new RelayCommand( _ => NavigateBackAsync());
+        EditCommand = new RelayCommand( _ => NavigateToEditAsync());
     }
 
-    private void NavigateBack()
+    private async Task NavigateBackAsync()
     {
         var list = new ToDoListViewModel(_main, _service);
-        _ = list.LoadAsync();
+        await list.LoadAsync();
         _main.NavigateTo(list);
     }
 
-    private void NavigateToEdit()
+    private Task NavigateToEditAsync()
     {
         var editor = new ToDoEditorViewModel(_main, _service, Item);
         _main.NavigateTo(editor);
+        return Task.CompletedTask;
     }
 
     private void OnPropertyChanged(string propertyName) =>

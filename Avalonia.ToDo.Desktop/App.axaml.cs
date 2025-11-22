@@ -6,7 +6,10 @@ using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Avalonia.ToDo.Desktop.Helpers;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Avalonia.ToDo.Desktop;
 
@@ -21,11 +24,25 @@ public class App : Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((_, services) =>
             {
-                services.AddHttpClient<IToDoService, ToDoService>(client =>
+                services.AddHttpClient("Gateway", c =>
                 {
-                    client.BaseAddress = new Uri("http://localhost:5119");
+                    c.BaseAddress = new Uri("http://localhost:7000");
+                });
+
+                services.AddSingleton<IAuthService>(sp =>
+                {
+                    var clientFactory = sp.GetRequiredService<IHttpClientFactory>();
+                    return new AuthService(clientFactory.CreateClient("Gateway"));
                 });
                 
+                services.AddTransient<AuthHeaderHandler>();
+
+                services.AddHttpClient<IToDoService, ToDoService>(c =>
+                    {
+                        c.BaseAddress = new Uri("http://localhost:7000");
+                    })
+                    .AddHttpMessageHandler<AuthHeaderHandler>();
+
                 services.AddSingleton<MainWindowViewModel>();
             })
             .Build();
@@ -35,9 +52,27 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = new MainWindow(AppHost.Services.GetRequiredService<MainWindowViewModel>());
-    
-            desktop.MainWindow = mainWindow;
+            var authService = AppHost.Services.GetRequiredService<IAuthService>();
+
+            var loginViewModel = new LoginViewModel(authService, () =>
+            {
+                var mainViewModel = AppHost.Services.GetRequiredService<MainWindowViewModel>();
+                desktop.MainWindow = new MainWindow(mainViewModel);
+                desktop.MainWindow.Show();
+
+                foreach (var window in desktop.Windows)
+                {
+                    if (window is LoginWindowView loginWindow)
+                    {
+                        loginWindow.Close();
+                        break;
+                    }
+                }
+
+                return Task.CompletedTask;
+            });
+
+            desktop.MainWindow = new LoginWindowView(loginViewModel);
         }
 
         base.OnFrameworkInitializationCompleted();

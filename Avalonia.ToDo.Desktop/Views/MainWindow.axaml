@@ -4,10 +4,6 @@
         x:Class="Avalonia.ToDo.Desktop.Views.MainWindow"
         Title="Avalonia ToDo Desktop Application"
         x:DataType="vm:MainWindowViewModel">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel /> 
-    </Design.DataContext>
     
     <Grid Background="#F0F2F5">
         <Border Background="White" CornerRadius="10" Margin="10" Padding="10"
@@ -24,9 +20,9 @@
                 Padding="10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
-                Margin="0, 0, 0, 30"
-                MinWidth="300"
-                MaxWidth="500"
+                Margin="0, 0, 0, 0"
+                MinWidth="400"
+                MaxWidth="00"
                 IsVisible="False">
             <Grid>
                 <Grid.ColumnDefinitions>

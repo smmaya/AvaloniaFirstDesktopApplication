@@ -9,6 +9,8 @@
         <entry key="Avalonia.ToDo.Desktop/Styles/CustomButtonTheme.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
         <entry key="Avalonia.ToDo.Desktop/Styles/CustomInputTheme.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
         <entry key="Avalonia.ToDo.Desktop/Views/DeleteConfirmationWindow.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/LoginWindow.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
+        <entry key="Avalonia.ToDo.Desktop/Views/LoginWindowView.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
         <entry key="Avalonia.ToDo.Desktop/Views/MainWindow.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
         <entry key="Avalonia.ToDo.Desktop/Views/ToDoDetailsView.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />
         <entry key="Avalonia.ToDo.Desktop/Views/ToDoDetailsViewModel.axaml" value="Avalonia.ToDo.Desktop/Avalonia.ToDo.Desktop.csproj" />

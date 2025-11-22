@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia.Shared.Services;
+using Avalonia.Shared.Interfaces;
 using Avalonia.ToDo.Desktop.Models;
 using Avalonia.ToDo.Desktop.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,7 +14,7 @@ namespace Avalonia.ToDo.Desktop.ViewModels;
 
 public class ToDoListViewModel : ObservableObject
 {
-    private readonly ToDoService _service;
+    private readonly IToDoService _service;
     private readonly MainWindowViewModel? _main;
 
     private int _totalCount;
@@ -47,7 +47,7 @@ public class ToDoListViewModel : ObservableObject
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
 
-    public ToDoListViewModel(MainWindowViewModel? main, ToDoService service)
+    public ToDoListViewModel(MainWindowViewModel? main, IToDoService service)
     {
         _service = service;
         _main = main;
@@ -144,13 +144,14 @@ public class ToDoListViewModel : ObservableObject
 
     private async Task DeleteItemAsync(ToDoDesktopDto item)
     {
-        if (_main == null)
-        {
+        var lifetime = Application.Current!.ApplicationLifetime
+            as Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime;
+
+        if (lifetime?.MainWindow == null)
             return;
-        }
 
         var dialog = new DeleteConfirmationWindow();
-        bool? result = await dialog.ShowDialog<bool?>(_main.MainWindow);
+        bool? result = await dialog.ShowDialog<bool?>(lifetime.MainWindow);
 
         if (result == true)
         {
