@@ -18,11 +18,18 @@ public partial class MainWindow : Window
     
     public async void ShowAlert(string message, int durationMs = 5000)
     {
-        AlertMessage.Text = message;
-        BottomAlert.IsVisible = true;
+        try
+        {
+            AlertMessage.Text = message;
+            BottomAlert.IsVisible = true;
         
-        await Task.Delay(durationMs);
-        BottomAlert.IsVisible = false;
+            await Task.Delay(durationMs);
+            BottomAlert.IsVisible = false;
+        }
+        catch
+        {
+            // ignored
+        }
     }
 
     private void CloseAlert_Click(object? sender, RoutedEventArgs e)

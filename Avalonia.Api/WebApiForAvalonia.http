@@ -1,6 +1,11 @@
 @WebApiForAvalonia_HostAddress = http://localhost:5119
 
-GET {{WebApiForAvalonia_HostAddress}}/weatherforecast/
+### Get All
+GET {{WebApiForAvalonia_HostAddress}}/api/todo/
 Accept: application/json
 
-###
+### Get specific
+GET {{WebApiForAvalonia_HostAddress}}/api/todo/3
+Accept: application/json
+
+### itp

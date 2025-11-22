@@ -11,7 +11,7 @@ namespace Avalonia.ToDo.Desktop.ViewModels;
 public class MainWindowViewModel : INotifyPropertyChanged
 {
     private readonly ToDoService _service;
-    private UserControl _currentView;
+    private UserControl _currentView = new();
     
     public required Window MainWindow { get; set; }
 
@@ -32,9 +32,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
     public MainWindowViewModel()
     {
-        _service = new ToDoService(
-            new HttpClient { BaseAddress = new Uri("http://localhost:5119/") });
-            
+        _service = new ToDoService(new HttpClient { BaseAddress = new Uri("http://localhost:5119/") });
+        
         _ = InitializeAsync();
     }
     

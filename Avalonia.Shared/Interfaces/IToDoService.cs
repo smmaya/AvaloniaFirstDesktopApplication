@@ -4,9 +4,9 @@ namespace Avalonia.Shared.Interfaces;
 
 public interface IToDoService
 {
-    Task<IEnumerable<ToDoDto>> GetAllAsync();
-    Task<ToDoDto?> GetByIdAsync(int id);
-    Task<ToDoDto> CreateAsync(ToDoDto item);
-    Task<ToDoDto> UpdateAsync(ToDoDto item);
-    Task<bool> DeleteAsync(int id);
+    public Task<IEnumerable<ToDoDto>> GetAllAsync();
+    public Task<ToDoDto?> GetByIdAsync(int id);
+    public Task<ToDoDto> CreateAsync(ToDoDto item);
+    public Task<ToDoDto> UpdateAsync(ToDoDto item);
+    public Task<bool> DeleteAsync(int id);
 }

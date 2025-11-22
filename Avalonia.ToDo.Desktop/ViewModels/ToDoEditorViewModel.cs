@@ -49,8 +49,8 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
     
     private async Task SaveAsync()
     {
-        var title = Item.Title?.Trim();
-        var description = Item.Description?.Trim();
+        var title = Item.Title.Trim();
+        var description = Item.Description.Trim();
 
         if (string.IsNullOrEmpty(title))
         {
