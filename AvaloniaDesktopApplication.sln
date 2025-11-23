@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.AuthService", "Ava
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Gateway", "Avalonia.Gateway\Avalonia.Gateway.csproj", "{BCA17F19-C337-4602-A540-577DD43538D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.LoggerService", "Avalonia.LoggerService\Avalonia.LoggerService.csproj", "{4AB64D98-A1F9-42A7-A4C2-870761386A0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{BCA17F19-C337-4602-A540-577DD43538D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA17F19-C337-4602-A540-577DD43538D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA17F19-C337-4602-A540-577DD43538D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AB64D98-A1F9-42A7-A4C2-870761386A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB64D98-A1F9-42A7-A4C2-870761386A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AB64D98-A1F9-42A7-A4C2-870761386A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AB64D98-A1F9-42A7-A4C2-870761386A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

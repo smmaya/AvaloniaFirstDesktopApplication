@@ -1,4 +1,7 @@
 using Avalonia.Api.Data;
+using Avalonia.Api.Services;
+using Avalonia.Shared.Enums;
+using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.ModelDtos;
 using Avalonia.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +42,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddHttpClient<IRemoteLogger, RemoteLogger>(c =>
+{
+    c.BaseAddress = new Uri("http://localhost:5115");
+});
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -70,8 +78,11 @@ app.UseAuthorization();
 # region Endpoints
 
 // Get all
-app.MapGet("/api/todo", async (ToDoDbContext db) =>
-    await db.ToDos
+app.MapGet("/api/todo", async (ToDoDbContext db, IRemoteLogger logger) =>
+{
+    await logger.LogAsync("[GET] all todos");
+    
+    return await db.ToDos
         .OrderByDescending(t => t.CreatedAt)
         .Select(t => new ToDoDto
         {
@@ -81,13 +92,15 @@ app.MapGet("/api/todo", async (ToDoDbContext db) =>
             Description = t.Description,
             IsCompleted = t.IsCompleted
         })
-        .ToListAsync()
-).RequireAuthorization();
+        .ToListAsync();
+}).RequireAuthorization();
 
 // Get by ID
-app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
+app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var t = await db.ToDos.FindAsync(id);
+    await logger.LogAsync($"[GET] todo: {id}");
+    
     return t is null ? Results.NotFound() : Results.Ok(new ToDoDto
     {
         Id = t.Id,
@@ -99,7 +112,7 @@ app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
 }).RequireAuthorization();
 
 // Create
-app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
+app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var todo = new ToDo
     {
@@ -112,10 +125,12 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
     db.ToDos.Add(todo);
     await db.SaveChangesAsync();
 
+    await logger.LogAsync($"[POST] created todo {todo.Id}: {todo.Title}", LogType.Create);
+
     return Results.Created($"/api/todo/{todo.Id}", new ToDoDto
     {
         Id = todo.Id,
-        CreatedAt = dto.CreatedAt,
+        CreatedAt = todo.CreatedAt,
         Title = todo.Title,
         Description = todo.Description,
         IsCompleted = todo.IsCompleted
@@ -123,34 +138,33 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db) =>
 }).RequireAuthorization();
 
 // Update
-app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db) =>
+app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var t = await db.ToDos.FindAsync(id);
     if (t is null) return Results.NotFound();
-    
+
     t.Title = dto.Title;
     t.Description = dto.Description;
     t.IsCompleted = dto.IsCompleted;
 
     await db.SaveChangesAsync();
-    return Results.Ok(new ToDoDto
-    {
-        Id = t.Id,
-        CreatedAt = t.CreatedAt,
-        Title = t.Title,
-        Description = t.Description,
-        IsCompleted = t.IsCompleted
-    });
+
+    await logger.LogAsync($"[PUT] updated todo: {id}", LogType.Update);
+
+    return Results.Ok(dto);
 }).RequireAuthorization();
 
 // Delete
-app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
+app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var t = await db.ToDos.FindAsync(id);
     if (t is null) return Results.NotFound();
 
     db.ToDos.Remove(t);
     await db.SaveChangesAsync();
+
+    await logger.LogAsync($"[DELETE] deleted todo: {id}", LogType.Delete);
+
     return Results.NoContent();
 }).RequireAuthorization();
 

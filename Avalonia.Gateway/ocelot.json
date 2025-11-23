@@ -20,6 +20,13 @@
       "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5201 } ],
       "UpstreamPathTemplate": "/auth/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/logs",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5115 } ],
+      "UpstreamPathTemplate": "/logs",
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {

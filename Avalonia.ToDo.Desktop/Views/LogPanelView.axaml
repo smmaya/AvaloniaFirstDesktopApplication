@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Avalonia.ToDo.Desktop.Converters"
+             x:Class="Avalonia.ToDo.Desktop.Views.LogPanelView">
+
+    <UserControl.Resources>
+        <converters:LogTypeToBrushConverter x:Key="LogTypeToBrushConverter"/>
+    </UserControl.Resources>
+
+    <Border Background="White"
+            Padding="10"
+            CornerRadius="10">
+        <ItemsControl ItemsSource="{Binding Logs}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="2"
+                               Text="{Binding Display}"
+                               Foreground="{Binding Type, Converter={StaticResource LogTypeToBrushConverter}}"
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               TextWrapping="Wrap" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Border>
+</UserControl>

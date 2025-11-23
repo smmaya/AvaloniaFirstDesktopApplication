@@ -1,4 +1,3 @@
-using Serilog;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -6,14 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Force explicit URL to avoid port collisions (dev) — Gateway listens on 7000
 builder.WebHost.UseUrls("http://localhost:7000");
-
-// Serilog basic console logging for gateway
-Log.Logger = new LoggerConfiguration()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
-
-builder.Host.UseSerilog();
 
 // Load Ocelot configuration from ocelot.json
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
