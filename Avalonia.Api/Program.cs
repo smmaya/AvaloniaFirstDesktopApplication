@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Services ---
+// Services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
@@ -50,7 +50,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-// --- Middleware ---
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -67,7 +67,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-// --- Endpoints ---
+# region Endpoints
 
 // Get all
 app.MapGet("/api/todo", async (ToDoDbContext db) =>
@@ -153,5 +153,7 @@ app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 }).RequireAuthorization();
+
+# endregion
 
 app.Run();

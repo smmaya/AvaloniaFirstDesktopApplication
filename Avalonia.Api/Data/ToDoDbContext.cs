@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Avalonia.Api.Data;
 
-public class ToDoDbContext : DbContext
+public class ToDoDbContext(DbContextOptions<ToDoDbContext> options) : DbContext(options)
 {
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<ToDo> ToDos => Set<ToDo>();
 }

@@ -1,17 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Avalonia.AuthService.Records;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Serilog console logging
-Log.Logger = new LoggerConfiguration()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .CreateLogger();
-builder.Host.UseSerilog();
 
 builder.WebHost.UseUrls("http://localhost:5201");
 
@@ -36,13 +29,18 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// Token acquisition
 app.MapPost("/auth/token", ([FromBody] LoginRequest req) =>
 {
     if (string.IsNullOrWhiteSpace(req.Username) || string.IsNullOrWhiteSpace(req.Password))
+    {
         return Results.BadRequest(new { error = "invalid_request" });
+    }
 
     if (!users.TryGetValue(req.Username, out var pwd) || pwd != req.Password)
+    {
         return Results.Unauthorized();
+    }
 
     var now = DateTimeOffset.UtcNow;
     var handler = new JwtSecurityTokenHandler();
@@ -70,14 +68,7 @@ app.MapPost("/auth/token", ([FromBody] LoginRequest req) =>
     });
 });
 
+// Health check
 app.MapGet("/auth/health", () => Results.Ok(new { status = "ok", service = "auth" }));
 
 app.Run();
-
-record LoginRequest(string Username, string Password);
-record TokenResponse
-{
-    public string AccessToken { get; init; } = string.Empty;
-    public string TokenType { get; init; } = "Bearer";
-    public int ExpiresIn { get; init; }
-}

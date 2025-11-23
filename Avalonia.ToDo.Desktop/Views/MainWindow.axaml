@@ -20,10 +20,22 @@
                 Padding="10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
-                Margin="0, 0, 0, 0"
-                MinWidth="400"
-                MaxWidth="00"
+                Margin="0,0,0,30"
+                MinWidth="500"
+                MaxWidth="900"
                 IsVisible="False">
+
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity"
+                                      Duration="0:0:0.6"
+                                      Easing="CircularEaseOut"/>
+                    <ThicknessTransition Property="Margin"
+                                         Duration="0:0:0.6"
+                                         Easing="CircularEaseOut"/>
+                </Transitions>
+            </Border.Transitions>
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -32,10 +44,10 @@
 
                 <TextBlock x:Name="AlertMessage"
                            Text="Error message goes here"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"
-                           Grid.Column="0"
-                           HorizontalAlignment="Left" />
+                           Grid.Column="0"/>
 
                 <Button Content="✖"
                         Width="30"

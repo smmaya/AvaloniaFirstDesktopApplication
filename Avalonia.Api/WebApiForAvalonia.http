@@ -1,11 +1,19 @@
-@WebApiForAvalonia_HostAddress = http://localhost:5119
+@ApiService = http://localhost:5119
+@AuthService = http://localhost:5201
 
 ### Get All
-GET {{WebApiForAvalonia_HostAddress}}/api/todo/
+GET {{ApiService}}/api/todo/
 Accept: application/json
 
 ### Get specific
-GET {{WebApiForAvalonia_HostAddress}}/api/todo/3
+GET {{ApiService}}/api/todo/3
 Accept: application/json
 
-### itp
+### Get the token from AuthService
+POST {{AuthService}}/auth/token
+Content-Type: application/json
+
+{
+  "username": "demo",
+  "password": "demo"
+}

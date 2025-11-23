@@ -20,9 +20,26 @@ public partial class MainWindow : Window
         try
         {
             AlertMessage.Text = message;
+
+            // Prepare before showing
+            BottomAlert.Opacity = 0;
+            BottomAlert.Margin = new Thickness(0, 0, 0, 10);
             BottomAlert.IsVisible = true;
-        
+
+            await Task.Delay(10); // allow layout to update
+
+            // Animate in
+            BottomAlert.Opacity = 1;
+            BottomAlert.Margin = new Thickness(0, 0, 0, 30);
+
             await Task.Delay(durationMs);
+
+            // Animate out
+            BottomAlert.Opacity = 0;
+            BottomAlert.Margin = new Thickness(0, 0, 0, 0);
+
+            await Task.Delay(600); // same as animation duration
+
             BottomAlert.IsVisible = false;
         }
         catch
@@ -31,8 +48,11 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CloseAlert_Click(object? sender, RoutedEventArgs e)
+    private async void CloseAlert_Click(object? sender, RoutedEventArgs e)
     {
+        BottomAlert.Opacity = 0;
+        BottomAlert.Margin = new Thickness(0, 0, 0, 0);
+        await Task.Delay(600);
         BottomAlert.IsVisible = false;
     }
 }

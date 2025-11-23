@@ -18,7 +18,7 @@ public class AuthHeaderHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        // Wait until token exists (if you want automatic refresh, add logic here)
+        // Wait until token exists, add automatic refresh later)
         var token = _authService.Token;
 
         if (!string.IsNullOrEmpty(token))
@@ -27,7 +27,6 @@ public class AuthHeaderHandler : DelegatingHandler
         }
         else
         {
-            // Optionally throw or log that the request is unauthenticated
             Console.WriteLine("Warning: sending request without JWT token!");
         }
 

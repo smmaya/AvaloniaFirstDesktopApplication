@@ -117,6 +117,8 @@ public class ToDoListViewModel : ObservableObject
             return Task.CompletedTask;
         }
 
+        // throw new Exception("Triggered Create button error for demo purpose.");
+        
         var newItem = new ToDoDesktopDto();
         _main.NavigateTo(new ToDoEditorViewModel(_main, _service, newItem));
         return Task.CompletedTask;
