@@ -1,5 +1,6 @@
 @ApiService = http://localhost:5119
 @AuthService = http://localhost:5201
+@LoggerService = http://localhost:5115
 
 ### Get All
 GET {{ApiService}}/api/todo/
@@ -16,4 +17,13 @@ Content-Type: application/json
 {
   "username": "demo",
   "password": "demo"
+}
+
+### Send a log message to LoggerService
+POST {{LoggerService}}/logs
+Content-Type: application/json
+
+{
+  "message": "This is a test message.",
+  "type": 0
 }

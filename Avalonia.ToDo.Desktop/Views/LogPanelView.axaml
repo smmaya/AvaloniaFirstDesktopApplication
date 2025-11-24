@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Avalonia.ToDo.Desktop.Converters"
              x:Class="Avalonia.ToDo.Desktop.Views.LogPanelView">
-
+    
     <UserControl.Resources>
         <converters:LogTypeToBrushConverter x:Key="LogTypeToBrushConverter"/>
     </UserControl.Resources>

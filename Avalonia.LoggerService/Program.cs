@@ -4,7 +4,6 @@ using Avalonia.Shared.Records;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton(LogStore.Instance);
-
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
@@ -12,6 +11,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 var app = builder.Build();
 
+// Create log
 app.MapPost("/logs", (LogEntry log, LogStore store) =>
 {
     var logWithTimestamp = log with { Timestamp = DateTime.UtcNow };
@@ -19,6 +19,7 @@ app.MapPost("/logs", (LogEntry log, LogStore store) =>
     return Results.Created("/logs", logWithTimestamp);
 });
 
+// Get all logs
 app.MapGet("/logs", (LogStore store) =>
     store.Logs.OrderByDescending(l => l.Timestamp));
 

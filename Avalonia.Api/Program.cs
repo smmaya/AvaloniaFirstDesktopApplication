@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Avalonia.Api.Data;
 using Avalonia.Api.Services;
 using Avalonia.Shared.Enums;
@@ -42,6 +43,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Register remote logger
 builder.Services.AddHttpClient<IRemoteLogger, RemoteLogger>(c =>
 {
     c.BaseAddress = new Uri("http://localhost:5115");

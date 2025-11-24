@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseUrls("http://localhost:5201");
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
