@@ -81,7 +81,7 @@ app.UseAuthorization();
 // Get all
 app.MapGet("/api/todo", async (ToDoDbContext db, IRemoteLogger logger) =>
 {
-    await logger.LogAsync("[GET] all todos");
+    await logger.LogAsync("[GET] fetched all todos");
     
     return await db.ToDos
         .OrderByDescending(t => t.CreatedAt)
@@ -100,7 +100,7 @@ app.MapGet("/api/todo", async (ToDoDbContext db, IRemoteLogger logger) =>
 app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var t = await db.ToDos.FindAsync(id);
-    await logger.LogAsync($"[GET] todo: {id}");
+    await logger.LogAsync($"[GET] fetched todo: {id}");
     
     return t is null ? Results.NotFound() : Results.Ok(new ToDoDto
     {

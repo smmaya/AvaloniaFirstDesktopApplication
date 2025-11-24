@@ -15,6 +15,7 @@ namespace Avalonia.ToDo.Desktop.Converters
                 LogType.Create => new SolidColorBrush(Colors.Green, 0.5),
                 LogType.Delete => new SolidColorBrush(Colors.Red, 0.5),
                 LogType.Update => new SolidColorBrush(Colors.Blue, 0.5),
+                LogType.View => new SolidColorBrush(Colors.BlueViolet, 0.5),
                 LogType.Info => Brushes.Gray,
                 _ => Brushes.DarkSlateGray
             };

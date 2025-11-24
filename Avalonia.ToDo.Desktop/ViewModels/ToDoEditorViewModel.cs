@@ -12,6 +12,7 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
 {
     private readonly MainWindowViewModel _main;
     private readonly IToDoService _service;
+    private readonly IRemoteLogger _remoteLogger;
     private readonly bool _isEditMode;
 
     private ToDoDto Item { get; set; }
@@ -22,10 +23,11 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ToDoEditorViewModel(MainWindowViewModel main, IToDoService service, ToDoDto? existingItem = null)
+    public ToDoEditorViewModel(MainWindowViewModel main, IToDoService service, IRemoteLogger remoteLogger, ToDoDto? existingItem = null)
     {
         _main = main;
         _service = service;
+        _remoteLogger = remoteLogger;
 
         if (existingItem != null && existingItem.Id != 0)
         {
@@ -129,7 +131,7 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
     
     private void NavigateBack()
     {
-        var list = new ToDoListViewModel(_main, _service);
+        var list = new ToDoListViewModel(_main, _service, _remoteLogger);
         _ = list.LoadAsync();
         _main.NavigateTo(list);
     }

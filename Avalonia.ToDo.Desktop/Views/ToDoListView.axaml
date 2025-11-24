@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Avalonia.ToDo.Desktop.ViewModels"
+             xmlns:ia="using:Avalonia.Xaml.Interactivity"
+             xmlns:ic="using:Avalonia.Xaml.Interactions.Core"
              x:Class="Avalonia.ToDo.Desktop.Views.ToDoListView"
              x:DataType="vm:ToDoListViewModel">
 
@@ -50,7 +52,20 @@
                 <ItemsControl ItemsSource="{Binding ToDos}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Background="White">
+                            <Border BorderBrush="#DDD" 
+                                    BorderThickness="0,0,0,1" 
+                                    Background="White" 
+                                    Cursor="Hand"
+                                    Focusable="True">
+
+                                <ia:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="DoubleTapped">
+                                        <ic:InvokeCommandAction
+                                            Command="{Binding DataContext.RowDoubleTappedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                    </ic:EventTriggerBehavior>
+                                </ia:Interaction.Behaviors>
+                                
                                 <Grid ColumnDefinitions="*,*,2*,Auto,Auto,Auto,Auto" MinHeight="32">
                                     <TextBlock Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MMM-dd}'}"
                                                FontWeight="SemiBold"

@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Api.Services;
 using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.ModelDtos;
 using Avalonia.ToDo.Desktop.Helpers;
@@ -11,6 +12,7 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
 {
     private readonly MainWindowViewModel _main;
     private readonly IToDoService _service;
+    private readonly IRemoteLogger _remoteLogger;
 
     private ToDoDto? _item;
     public ToDoDto? Item
@@ -45,10 +47,11 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ToDoDetailsViewModel(MainWindowViewModel main, IToDoService service, ToDoDto? existingItem = null)
+    public ToDoDetailsViewModel(MainWindowViewModel main, IToDoService service, IRemoteLogger remoteLogger, ToDoDto? existingItem = null)
     {
         _main = main;
         _service = service;
+        _remoteLogger = remoteLogger;
 
         Item = existingItem;
         IsEditing = false;
@@ -59,14 +62,14 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
 
     private async Task NavigateBackAsync()
     {
-        var list = new ToDoListViewModel(_main, _service);
+        var list = new ToDoListViewModel(_main, _service, _remoteLogger);
         await list.LoadAsync();
         _main.NavigateTo(list);
     }
 
     private Task NavigateToEditAsync()
     {
-        var editor = new ToDoEditorViewModel(_main, _service, Item);
+        var editor = new ToDoEditorViewModel(_main, _service, _remoteLogger, Item);
         _main.NavigateTo(editor);
         return Task.CompletedTask;
     }

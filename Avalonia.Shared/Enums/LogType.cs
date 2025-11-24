@@ -5,5 +5,6 @@ public enum LogType
     Info,
     Create,
     Update,
-    Delete
+    Delete,
+    View
 }

@@ -10,6 +10,7 @@ using Avalonia.ToDo.Desktop.Helpers;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Avalonia.Api.Services;
 
 namespace Avalonia.ToDo.Desktop;
 
@@ -36,6 +37,11 @@ public class App : Application
                 });
                 
                 services.AddTransient<AuthHeaderHandler>();
+                
+                services.AddHttpClient<IRemoteLogger, RemoteLogger>(c =>
+                {
+                    c.BaseAddress = new Uri("http://localhost:5115");
+                });
 
                 services.AddHttpClient<IToDoService, ToDoService>(c =>
                     {

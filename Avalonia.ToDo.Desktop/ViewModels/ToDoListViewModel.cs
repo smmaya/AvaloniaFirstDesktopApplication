@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Shared.Enums;
 using Avalonia.Shared.Interfaces;
 using Avalonia.ToDo.Desktop.Models;
 using Avalonia.ToDo.Desktop.Views;
@@ -16,12 +17,13 @@ public class ToDoListViewModel : ObservableObject
 {
     private readonly IToDoService _service;
     private readonly MainWindowViewModel? _main;
+    private readonly IRemoteLogger _remoteLogger;
 
     private int _totalCount;
     private int _remainingCount;
     private bool _canCreate;
 
-    public ObservableCollection<ToDoDesktopDto> ToDos { get; } = new();
+    private ObservableCollection<ToDoDesktopDto> ToDos { get; } = new();
 
     public int TotalCount
     {
@@ -46,10 +48,12 @@ public class ToDoListViewModel : ObservableObject
     public ICommand ViewCommand { get; }
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
+    public ICommand RowDoubleTappedCommand { get; }
 
-    public ToDoListViewModel(MainWindowViewModel? main, IToDoService service)
+    public ToDoListViewModel(MainWindowViewModel? main, IToDoService service, IRemoteLogger remoteLogger)
     {
         _service = service;
+        _remoteLogger = remoteLogger;
         _main = main;
         _canCreate = false;
 
@@ -64,6 +68,7 @@ public class ToDoListViewModel : ObservableObject
                 await DeleteItemAsync(item);
             }
         });
+        RowDoubleTappedCommand = new RelayCommand(param => ViewItem(param as ToDoDesktopDto));
     }
 
     public async Task LoadAsync()
@@ -120,7 +125,7 @@ public class ToDoListViewModel : ObservableObject
         // throw new Exception("Triggered Create button error for demo purpose.");
         
         var newItem = new ToDoDesktopDto();
-        _main.NavigateTo(new ToDoEditorViewModel(_main, _service, newItem));
+        _main.NavigateTo(new ToDoEditorViewModel(_main, _service, _remoteLogger, newItem));
         return Task.CompletedTask;
     }
 
@@ -131,7 +136,9 @@ public class ToDoListViewModel : ObservableObject
             return;
         }
 
-        _main.NavigateTo(new ToDoDetailsViewModel(_main, _service, item));
+        _remoteLogger.LogAsync($"Viewing ToDo item: {item.Id} - {item.Title}", LogType.View);
+        
+        _main.NavigateTo(new ToDoDetailsViewModel(_main, _service, _remoteLogger, item));
     }
 
     private void EditItem(ToDoDesktopDto? item)
@@ -141,12 +148,12 @@ public class ToDoListViewModel : ObservableObject
             return;
         }
 
-        _main.NavigateTo(new ToDoEditorViewModel(_main, _service, item));
+        _main.NavigateTo(new ToDoEditorViewModel(_main, _service, _remoteLogger, item));
     }
 
     private async Task DeleteItemAsync(ToDoDesktopDto item)
     {
-        var lifetime = Application.Current!.ApplicationLifetime
+        var lifetime = Application.Current?.ApplicationLifetime
             as Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime;
 
         if (lifetime?.MainWindow == null)

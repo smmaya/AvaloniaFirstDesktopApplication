@@ -11,6 +11,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 {
     public Window? MainWindow { get; set; }
     private readonly IToDoService _service;
+    private readonly IRemoteLogger _remoteLogger;
     private UserControl _currentView = new();
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -25,9 +26,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public MainWindowViewModel(IToDoService service)
+    public MainWindowViewModel(IToDoService service, IRemoteLogger remoteLogger)
     {
         _service = service;
+        _remoteLogger = remoteLogger;
         _ = InitializeAsync();
     }
 
@@ -35,7 +37,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     {
         try
         {
-            var listViewModel = new ToDoListViewModel(this, _service);
+            var listViewModel = new ToDoListViewModel(this, _service, _remoteLogger);
             await listViewModel.LoadAsync();
             CurrentView = new ToDoListView { DataContext = listViewModel };
         }

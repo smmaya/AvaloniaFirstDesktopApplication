@@ -90,6 +90,7 @@ public class LoginViewModel : INotifyPropertyChanged
         catch (Exception ex)
         {
             ErrorMessage = $"Login failed: {ex.Message}";
+            Console.WriteLine(ex.Message);
         }
         finally
         {
