@@ -49,11 +49,10 @@ app.MapPost("/auth/token", ([FromBody] LoginRequest req) =>
         Audience = audience,
         Expires = now.AddMinutes(30).UtcDateTime,
         NotBefore = now.UtcDateTime,
-        Subject = new ClaimsIdentity(new[]
-        {
+        Subject = new ClaimsIdentity([
             new Claim(JwtRegisteredClaimNames.Sub, req.Username),
             new Claim("scope", "todo.read todo.write")
-        }),
+        ]),
         SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
     };
 

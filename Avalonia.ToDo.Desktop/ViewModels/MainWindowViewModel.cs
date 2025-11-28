@@ -9,7 +9,6 @@ namespace Avalonia.ToDo.Desktop.ViewModels;
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
-    public Window? MainWindow { get; set; }
     private readonly IToDoService _service;
     private readonly IRemoteLogger _remoteLogger;
     private UserControl _currentView = new();

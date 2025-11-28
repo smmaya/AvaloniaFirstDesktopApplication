@@ -79,7 +79,7 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
         NavigateBack();
     }
     
-    private async Task ShowError(string message)
+    private static async Task ShowError(string message)
     {
         var window = new Controls.Window
         {
@@ -118,8 +118,7 @@ public class ToDoEditorViewModel : INotifyPropertyChanged
 
         window.Content = stack;
 
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
-            && desktop.MainWindow is { } mainWindow)
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } mainWindow })
         {
             await window.ShowDialog(mainWindow);
         }

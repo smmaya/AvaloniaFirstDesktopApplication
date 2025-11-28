@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -53,9 +54,16 @@ public partial class MainWindow : Window
 
     private async void CloseAlert_Click(object? sender, RoutedEventArgs e)
     {
-        BottomAlert.Opacity = 0;
-        BottomAlert.Margin = new Thickness(0, 0, 0, 0);
-        await Task.Delay(600);
-        BottomAlert.IsVisible = false;
+        try
+        {
+            BottomAlert.Opacity = 0;
+            BottomAlert.Margin = new Thickness(0, 0, 0, 0);
+            await Task.Delay(600);
+            BottomAlert.IsVisible = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

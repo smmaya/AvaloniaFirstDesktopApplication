@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia.Api.Services;
 using Avalonia.Shared.Interfaces;
 using Avalonia.Shared.ModelDtos;
 using Avalonia.ToDo.Desktop.Helpers;
@@ -20,11 +19,9 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
         get => _item;
         set
         {
-            if (_item != value)
-            {
-                _item = value;
-                OnPropertyChanged(nameof(Item));
-            }
+            if (_item == value) return;
+            _item = value;
+            OnPropertyChanged(nameof(Item));
         }
     }
     
@@ -34,11 +31,9 @@ public class ToDoDetailsViewModel : INotifyPropertyChanged
         get => _isEditing;
         set
         {
-            if (_isEditing != value)
-            {
-                _isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-            }
+            if (_isEditing == value) return;
+            _isEditing = value;
+            OnPropertyChanged(nameof(IsEditing));
         }
     }
 

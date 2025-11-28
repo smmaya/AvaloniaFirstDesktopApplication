@@ -2,28 +2,27 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace Avalonia.ToDo.Desktop.Converters
+namespace Avalonia.ToDo.Desktop.Converters;
+
+public class InverseBooleanConverter : IValueConverter
 {
-    public class InverseBooleanConverter : IValueConverter
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        if (value is bool b)
         {
-            if (value is bool b)
-            {
-                return !b;
-            }
-
-            return true;
+            return !b;
         }
 
-        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is bool b)
-            {
-                return !b;
-            }
+        return true;
+    }
 
-            return false;
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool b)
+        {
+            return !b;
         }
+
+        return false;
     }
 }

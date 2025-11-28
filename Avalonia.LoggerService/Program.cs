@@ -28,5 +28,5 @@ app.Run();
 public class LogStore
 {
     public static readonly LogStore Instance = new();
-    public ConcurrentBag<LogEntry> Logs { get; } = new();
+    public ConcurrentBag<LogEntry> Logs { get; } = [];
 }

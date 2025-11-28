@@ -15,11 +15,11 @@ public class LogPanelViewModel : ViewModelBase
     private readonly HttpClient _client = new() { BaseAddress = new Uri("http://localhost:7000") };
     private readonly Timer _timer;
 
-    private ObservableCollection<LogDto> Logs { get; } = new();
+    private ObservableCollection<LogDto> Logs { get; } = [];
 
     public LogPanelViewModel()
     {
-        _timer = new Timer(2000); // refresh every 2s
+        _timer = new Timer(2000);
         _timer.Elapsed += async (_, _) => await LoadLogs();
         _timer.Start();
     }
@@ -46,5 +46,5 @@ public class LogPanelViewModel : ViewModelBase
     private record LogDto(string Message, DateTime Timestamp, LogType Type)
     {
         public string Display => $"{Timestamp:HH:mm:ss} - {Message}";
-    };
+    }
 }

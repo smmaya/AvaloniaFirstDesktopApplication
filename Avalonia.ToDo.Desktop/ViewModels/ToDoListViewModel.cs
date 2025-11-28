@@ -23,7 +23,7 @@ public class ToDoListViewModel : ObservableObject
     private int _remainingCount;
     private bool _canCreate;
 
-    private ObservableCollection<ToDoDesktopDto> ToDos { get; } = new();
+    private ObservableCollection<ToDoDesktopDto> ToDos { get; } = [];
 
     public int TotalCount
     {
@@ -43,12 +43,12 @@ public class ToDoListViewModel : ObservableObject
         private set => SetProperty(ref _canCreate, value);
     }
 
-    public ICommand CreateCommand { get; }
-    public ICommand RefreshCommand { get; }
-    public ICommand ViewCommand { get; }
-    public ICommand EditCommand { get; }
-    public ICommand DeleteCommand { get; }
-    public ICommand RowDoubleTappedCommand { get; }
+    public ICommand CreateCommand { get; set; }
+    public ICommand RefreshCommand { get; set; }
+    public ICommand ViewCommand { get; set; }
+    public ICommand EditCommand { get; set; }
+    public ICommand DeleteCommand { get; set; }
+    public ICommand RowDoubleTappedCommand { get; set; }
 
     public ToDoListViewModel(MainWindowViewModel? main, IToDoService service, IRemoteLogger remoteLogger)
     {
@@ -112,7 +112,7 @@ public class ToDoListViewModel : ObservableObject
     private void UpdateCounts()
     {
         TotalCount = ToDos.Count(t => !t.IsPlaceholder);
-        RemainingCount = ToDos.Count(t => !t.IsCompleted && !t.IsPlaceholder);
+        RemainingCount = ToDos.Count(t => t is { IsCompleted: false, IsPlaceholder: false });
     }
 
     private Task CreateAsync()
@@ -136,7 +136,7 @@ public class ToDoListViewModel : ObservableObject
             return;
         }
 
-        _remoteLogger.LogAsync($"Viewing ToDo item: {item.Id} - {item.Title}", LogType.View);
+        _remoteLogger.LogAsync($"[ACTION] Viewing task Id: {item.Id}", LogType.View);
         
         _main.NavigateTo(new ToDoDetailsViewModel(_main, _service, _remoteLogger, item));
     }
@@ -160,7 +160,7 @@ public class ToDoListViewModel : ObservableObject
             return;
 
         var dialog = new DeleteConfirmationWindow();
-        bool? result = await dialog.ShowDialog<bool?>(lifetime.MainWindow);
+        var result = await dialog.ShowDialog<bool?>(lifetime.MainWindow);
 
         if (result == true)
         {

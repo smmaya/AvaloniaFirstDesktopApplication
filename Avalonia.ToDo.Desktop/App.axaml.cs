@@ -16,7 +16,7 @@ namespace Avalonia.ToDo.Desktop;
 
 public class App : Application
 {
-    private IHost AppHost { get; set; }
+    private IHost? AppHost { get; set; }
 
     public override void Initialize()
     {
@@ -58,27 +58,28 @@ public class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var authService = AppHost.Services.GetRequiredService<IAuthService>();
+            var authService = AppHost?.Services.GetRequiredService<IAuthService>();
 
-            var loginViewModel = new LoginViewModel(authService, () =>
+            if (authService != null)
             {
-                var mainViewModel = AppHost.Services.GetRequiredService<MainWindowViewModel>();
-                desktop.MainWindow = new MainWindow(mainViewModel);
-                desktop.MainWindow.Show();
-
-                foreach (var window in desktop.Windows)
+                var loginViewModel = new LoginViewModel(authService, () =>
                 {
-                    if (window is LoginWindowView loginWindow)
+                    var mainViewModel = AppHost?.Services.GetRequiredService<MainWindowViewModel>();
+                    if (mainViewModel != null) desktop.MainWindow = new MainWindow(mainViewModel);
+                    desktop.MainWindow?.Show();
+
+                    foreach (var window in desktop.Windows)
                     {
+                        if (window is not LoginWindowView loginWindow) continue;
                         loginWindow.Close();
                         break;
                     }
-                }
 
-                return Task.CompletedTask;
-            });
+                    return Task.CompletedTask;
+                });
 
-            desktop.MainWindow = new LoginWindowView(loginViewModel);
+                desktop.MainWindow = new LoginWindowView(loginViewModel);
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

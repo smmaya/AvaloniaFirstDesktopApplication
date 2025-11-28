@@ -39,8 +39,19 @@
         </Border>
 
         <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Left">
-            <Button Content="⬅ Back" Command="{Binding BackCommand}" />
-            <Button Content="✏ Edit" Command="{Binding EditCommand}" />
+            <Button Command="{Binding BackCommand}" Width="100" Height="36">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                    <TextBlock Text="⬅" FontSize="20" VerticalAlignment="Center" Foreground="DarkSlateGray" Opacity="0.8"/>
+                    <TextBlock Text="Back" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding EditCommand}" Width="100" Height="36">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+                    <TextBlock Text="✍️" FontSize="24" VerticalAlignment="Center" Foreground="DarkSlateGray" Opacity="0.8"/>
+                    <TextBlock Text="Edit" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
+        
     </StackPanel>
 </UserControl>

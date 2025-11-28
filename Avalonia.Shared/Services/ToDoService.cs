@@ -7,7 +7,7 @@ namespace Avalonia.Shared.Services;
 public class ToDoService(HttpClient httpClient) : IToDoService
 {
     public async Task<IEnumerable<ToDoDto>> GetAllAsync()
-        => await httpClient.GetFromJsonAsync<IEnumerable<ToDoDto>>("api/todo") ?? Enumerable.Empty<ToDoDto>();
+        => await httpClient.GetFromJsonAsync<IEnumerable<ToDoDto>>("api/todo") ?? [];
 
     public async Task<ToDoDto?> GetByIdAsync(int id)
         => await httpClient.GetFromJsonAsync<ToDoDto>($"api/todo/{id}");

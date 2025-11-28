@@ -81,7 +81,7 @@ app.UseAuthorization();
 // Get all
 app.MapGet("/api/todo", async (ToDoDbContext db, IRemoteLogger logger) =>
 {
-    await logger.LogAsync("[GET] fetched all todos");
+    await logger.LogAsync("[GET] Fetched all tasks.");
     
     return await db.ToDos
         .OrderByDescending(t => t.CreatedAt)
@@ -100,7 +100,7 @@ app.MapGet("/api/todo", async (ToDoDbContext db, IRemoteLogger logger) =>
 app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger) =>
 {
     var t = await db.ToDos.FindAsync(id);
-    await logger.LogAsync($"[GET] fetched todo: {id}");
+    await logger.LogAsync($"[GET] Fetched task Id: {id}");
     
     return t is null ? Results.NotFound() : Results.Ok(new ToDoDto
     {
@@ -126,7 +126,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger log
     db.ToDos.Add(todo);
     await db.SaveChangesAsync();
 
-    await logger.LogAsync($"[POST] created todo {todo.Id}: {todo.Title}", LogType.Create);
+    await logger.LogAsync($"[POST] Created task Id: {todo.Id} - {todo.Title}", LogType.Create);
 
     return Results.Created($"/api/todo/{todo.Id}", new ToDoDto
     {
@@ -150,7 +150,7 @@ app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db, I
 
     await db.SaveChangesAsync();
 
-    await logger.LogAsync($"[PUT] updated todo: {id}", LogType.Update);
+    await logger.LogAsync($"[PUT] Updated task Id: {id}", LogType.Update);
 
     return Results.Ok(dto);
 }).RequireAuthorization();
@@ -164,7 +164,7 @@ app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogg
     db.ToDos.Remove(t);
     await db.SaveChangesAsync();
 
-    await logger.LogAsync($"[DELETE] deleted todo: {id}", LogType.Delete);
+    await logger.LogAsync($"[DELETE] Deleted task Id: {id}", LogType.Delete);
 
     return Results.NoContent();
 }).RequireAuthorization();
