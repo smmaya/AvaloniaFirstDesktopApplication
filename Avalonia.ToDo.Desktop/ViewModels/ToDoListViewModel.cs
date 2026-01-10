@@ -11,6 +11,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RelayCommand = Avalonia.ToDo.Desktop.Helpers.RelayCommand;
 
+using Avalonia.ToDo.Desktop.Services;
+using Avalonia.Threading;
+
 namespace Avalonia.ToDo.Desktop.ViewModels;
 
 public class ToDoListViewModel : ObservableObject
@@ -18,6 +21,7 @@ public class ToDoListViewModel : ObservableObject
     private readonly IToDoService _service;
     private readonly MainWindowViewModel? _main;
     private readonly IRemoteLogger _remoteLogger;
+    private readonly SignalRService? _signalRService;
 
     private int _totalCount;
     private int _remainingCount;
@@ -50,12 +54,18 @@ public class ToDoListViewModel : ObservableObject
     public ICommand DeleteCommand { get; set; }
     public ICommand RowDoubleTappedCommand { get; set; }
 
-    public ToDoListViewModel(MainWindowViewModel? main, IToDoService service, IRemoteLogger remoteLogger)
+    public ToDoListViewModel(MainWindowViewModel? main, IToDoService service, IRemoteLogger remoteLogger, SignalRService? signalRService = null)
     {
         _service = service;
         _remoteLogger = remoteLogger;
         _main = main;
+        _signalRService = signalRService;
         _canCreate = false;
+
+        if (_signalRService != null)
+        {
+            _signalRService.OnToDoUpdated += HandleToDoUpdated;
+        }
 
         CreateCommand = new RelayCommand(async _ => await CreateAsync());
         RefreshCommand = new RelayCommand(async _ => await LoadAsync());
@@ -69,6 +79,11 @@ public class ToDoListViewModel : ObservableObject
             }
         });
         RowDoubleTappedCommand = new RelayCommand(param => ViewItem(param as ToDoDesktopDto));
+    }
+
+    private void HandleToDoUpdated(string action, int id)
+    {
+        Dispatcher.UIThread.InvokeAsync(async () => await LoadAsync());
     }
 
     public async Task LoadAsync()

@@ -13,7 +13,8 @@ builder.Services.AddOpenApi();
 // Simple in-memory user store for dev
 var users = new Dictionary<string, string>
 {
-    ["demo"] = "demo"
+    ["demo"] = "demo",
+    ["user"] = "user"
 };
 
 // Dev symmetric key (replace with RSA + proper Identity/OpenIddict in prod)

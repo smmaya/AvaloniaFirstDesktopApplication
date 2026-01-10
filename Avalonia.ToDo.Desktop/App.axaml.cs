@@ -12,6 +12,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Avalonia.Api.Services;
 
+using Avalonia.ToDo.Desktop.Services;
+
 namespace Avalonia.ToDo.Desktop;
 
 public class App : Application
@@ -49,6 +51,7 @@ public class App : Application
                     })
                     .AddHttpMessageHandler<AuthHeaderHandler>();
 
+                services.AddSingleton<SignalRService>();
                 services.AddSingleton<MainWindowViewModel>();
             })
             .Build();
@@ -62,10 +65,13 @@ public class App : Application
 
             if (authService != null)
             {
-                var loginViewModel = new LoginViewModel(authService, () =>
+                var loginViewModel = new LoginViewModel(authService, async () =>
                 {
                     var mainViewModel = AppHost?.Services.GetRequiredService<MainWindowViewModel>();
-                    if (mainViewModel != null) desktop.MainWindow = new MainWindow(mainViewModel);
+                    if (mainViewModel != null)
+                    {
+                        desktop.MainWindow = new MainWindow(mainViewModel);
+                    }
                     desktop.MainWindow?.Show();
 
                     foreach (var window in desktop.Windows)
@@ -74,8 +80,6 @@ public class App : Application
                         loginWindow.Close();
                         break;
                     }
-
-                    return Task.CompletedTask;
                 });
 
                 desktop.MainWindow = new LoginWindowView(loginViewModel);

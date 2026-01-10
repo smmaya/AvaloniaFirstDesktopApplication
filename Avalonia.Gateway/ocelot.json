@@ -15,6 +15,21 @@
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
+      "DownstreamPathTemplate": "/hubs/todo",
+      "DownstreamScheme": "ws",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5119 } ],
+      "UpstreamPathTemplate": "/hubs/todo",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UseWebSockets": true
+    },
+    {
+      "DownstreamPathTemplate": "/hubs/todo/negotiate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5119 } ],
+      "UpstreamPathTemplate": "/hubs/todo/negotiate",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
       "DownstreamPathTemplate": "/auth/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5201 } ],

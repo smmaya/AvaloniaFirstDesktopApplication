@@ -1,4 +1,5 @@
 using Avalonia.Api.Data;
+using Avalonia.Api.Hubs;
 using Avalonia.Api.Services;
 using Avalonia.Shared.Enums;
 using Avalonia.Shared.Interfaces;
@@ -7,6 +8,7 @@ using Avalonia.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
+builder.Services.AddSignalR();
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseSqlite("Data Source=todo.db"));
 
@@ -39,6 +42,22 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = signingKey,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.FromSeconds(30)
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            
+            if (!string.IsNullOrEmpty(accessToken)
+                && path.StartsWithSegments("/hubs/todo"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -73,6 +92,7 @@ if (app.Environment.IsDevelopment())
 // For local development behind a gateway using HTTP, skip HTTPS redirection.
 // Enable HTTPS in production with proper certificates.
 // app.UseHttpsRedirection();
+app.UseWebSockets();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -113,7 +133,7 @@ app.MapGet("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger 
 }).RequireAuthorization();
 
 // Create
-app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger logger) =>
+app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger logger, IHubContext<ToDoHub> hubContext) =>
 {
     var todo = new ToDo
     {
@@ -127,6 +147,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger log
     await db.SaveChangesAsync();
 
     await logger.LogAsync($"[POST] Created task Id: {todo.Id} - {todo.Title}", LogType.Create);
+    await hubContext.Clients.All.SendAsync("ToDoUpdated", "Create", todo.Id);
 
     return Results.Created($"/api/todo/{todo.Id}", new ToDoDto
     {
@@ -139,7 +160,7 @@ app.MapPost("/api/todo", async (ToDoDto dto, ToDoDbContext db, IRemoteLogger log
 }).RequireAuthorization();
 
 // Update
-app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db, IRemoteLogger logger) =>
+app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db, IRemoteLogger logger, IHubContext<ToDoHub> hubContext) =>
 {
     var t = await db.ToDos.FindAsync(id);
     if (t is null) return Results.NotFound();
@@ -151,12 +172,13 @@ app.MapPut("/api/todo/{id:int}", async (int id, ToDoDto dto, ToDoDbContext db, I
     await db.SaveChangesAsync();
 
     await logger.LogAsync($"[PUT] Updated task Id: {id}", LogType.Update);
+    await hubContext.Clients.All.SendAsync("ToDoUpdated", "Update", id);
 
     return Results.Ok(dto);
 }).RequireAuthorization();
 
 // Delete
-app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger) =>
+app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogger logger, IHubContext<ToDoHub> hubContext) =>
 {
     var t = await db.ToDos.FindAsync(id);
     if (t is null) return Results.NotFound();
@@ -165,10 +187,13 @@ app.MapDelete("/api/todo/{id:int}", async (int id, ToDoDbContext db, IRemoteLogg
     await db.SaveChangesAsync();
 
     await logger.LogAsync($"[DELETE] Deleted task Id: {id}", LogType.Delete);
+    await hubContext.Clients.All.SendAsync("ToDoUpdated", "Delete", id);
 
     return Results.NoContent();
 }).RequireAuthorization();
 
 # endregion
+
+app.MapHub<ToDoHub>("/hubs/todo");
 
 app.Run();
